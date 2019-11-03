@@ -1,6 +1,7 @@
 #!python
 
 from __future__ import division, print_function  # Python 2 and 3 compatibility
+import random
 
 
 class Dictogram(dict):
@@ -19,11 +20,32 @@ class Dictogram(dict):
 
     def add_count(self, word, count=1):
         """Increase frequency count of given word by given count amount."""
-        # TODO: Increase word frequency by count
+        if word in self.keys():
+            self[word] += 1
+            self.tokens += 1
+        else:
+            self[word] = 1
+            self.tokens += 1
+            self.types += 1
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
-        # TODO: Retrieve word frequency count
+        return self[word]
+
+    def random_word(self, amount):
+        word_list = []
+        words = []
+        for i in range(amount):
+            words.append(random.randint(0, (self.tokens - 1)))
+        last_set_val = 0
+        for type in self:
+            new_val = last_set_val + self[type]
+            for word in range(len(words)):
+                if words[word] is not None and words[word] < new_val:
+                    word_list.append(type)
+                    words[word] = None
+            last_set_val = new_val
+        return word_list
 
 
 def print_histogram(word_list):
@@ -35,6 +57,8 @@ def print_histogram(word_list):
     for word in word_list[-2:]:
         freq = histogram.frequency(word)
         print('{!r} occurs {} times'.format(word, freq))
+    print()
+    print(histogram.random_word(1))
     print()
 
 

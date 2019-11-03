@@ -1,4 +1,44 @@
 import random
+import sys
+
+
+def read_file(file_name):
+    with open(file_name) as file:
+        text_string = [line.strip() for line in file]
+    text_string = ' '.join(text_string)
+    return text_string
+
+
+def choose_words(word_list, number):
+    chosen_words = [random.choice(word_list) for i in range(number)]
+    return chosen_words
+
+
+def _format(chosen_words):
+    sentence = ' '.join(chosen_words) + '.'
+    return sentence
+
+
+def break_string(string_of_words):
+    list_of_words = string_of_words.split(' ')
+    return list_of_words
+
+
+def randomize_words(words_string):
+    word_list = break_string(words_string)
+    for i in range(len(word_list)):
+        word1_index = random.randrange(len(word_list))
+        word2_index = random.randrange(len(word_list))
+        word1 = word_list[word1_index]
+        word2 = word_list[word2_index]
+        word_list[int(word1_index)] = word2
+        word_list[int(word2_index)] = word1
+    return word_list
+
+
+def random_python_quote(quotes):
+    rand_index = random.randint(0, len(quotes) - 1)
+    return quotes[rand_index]
 
 
 def clean_return_list(text_string):
@@ -13,13 +53,6 @@ def clean_return_list(text_string):
         if clean_word != '' and clean_word != ' ':
             clean_list.append(clean_word)
     return clean_list
-
-
-def read_file(file_name):
-    with open(file_name) as file:
-        text_string = [line.strip() for line in file]
-    text_string = ' '.join(text_string)
-    return text_string
 
 
 def histo_dic(text_list):
@@ -67,33 +100,19 @@ def histo_tup(text_list):
     return my_tuplgram
 
 
-def unique_words_dic(histogram_dic):
+def unique_words(histogram_dic):
     return len(histogram_dic)
 
 
-def unique_words_tup(histogram_dic):
-    return len(histogram_dic)
-
-
-def unique_words_list(histogram_dic):
-    return len(histogram_dic)
-
-
-def frequency_dic(word, histogram_dic):
+def frequency_dict(word, histogram_dic):
     freq = histogram_dic[word]
     return freq
 
 
-def frequency_tup(word, histogram_tup):
+def frequency(word, histogram_tup):
     for index in range(len(histogram_tup)):
         if histogram_tup[index][0] == word:
             return histogram_tup[index][1]
-
-
-def frequency_list(word, histogram_list):
-    for index in range(len(histogram_list)):
-        if histogram_list[index][0] == word:
-            return histogram_list[index][1]
 
 
 def dict_prob_gen(histogram):
@@ -124,16 +143,3 @@ def test_prob_gen(histogram):
         sum += new_histogram[key]
     print(sum)
     return new_histogram
-
-
-if __name__ == '__main__':
-    text_string = read_file('1661-.txt')
-    list_of_words = clean_return_list(text_string)
-    _histogram, r = histo_dic(list_of_words)
-    unique = unique_words_dic(_histogram)
-    print(f'There were {unique} unique words.')
-    _frequency = frequency_dic('i', _histogram)
-    print(f'The frequency of i is {_frequency}.')
-    # print(dict_prob_gen(_histogram))
-    # new_hist = test_prob_gen(_histogram)
-    # print(sorted(_histogram.items(), key=lambda kv: kv[1]))

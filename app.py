@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for
-from my_code.dictionary_words import read_file, choose_words, _format, main
+from starter_code.dictogram import Dictogram
+from my_code.my_module import clean_return_list, read_file
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    sentence = main('text_files/1661-.txt', 7)
+    clean_list = clean_return_list(read_file('text_files/1661-.txt'))
+    histogram = Dictogram(clean_list)
+    sentence = ' '.join(histogram.random_word(10))
     return f"""<p> {sentence} </p>"""
 
 
