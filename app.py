@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from starter_code.dictogram import Dictogram
-from my_code.my_module import clean_return_list, read_file
+from my_code.my_module import clean_return_list, read_file, _format
 app = Flask(__name__)
 
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 def home():
     clean_list = clean_return_list(read_file('text_files/1661-.txt'))
     histogram = Dictogram(clean_list)
-    sentence = ' '.join(histogram.random_word(10))
+    sentence = _format(histogram.random_word(10))
     return f"""<p> {sentence} </p>"""
 
 
