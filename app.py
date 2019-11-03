@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    sentence = main('/usr/share/dict/words', 7)
+    sentence = main('text_files/1661-.txt', 7)
     return f"""<p> {sentence} </p>"""
 
 
