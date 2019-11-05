@@ -36,11 +36,6 @@ def randomize_words(words_string):
     return word_list
 
 
-def random_python_quote(quotes):
-    rand_index = random.randint(0, len(quotes) - 1)
-    return quotes[rand_index]
-
-
 def clean_return_list(text_string):
     text_string = text_string.translate({ord(i): '' for i in """.?!,":;â€œ™@$%&*[]#()~_˜©”"""})
     text_string = text_string.translate({ord(i): ' ' for i in """”"""})
