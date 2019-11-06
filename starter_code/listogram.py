@@ -21,17 +21,22 @@ class Listogram(list):
         """Increase frequency count of given word by given count amount."""
         # TODO: Increase word frequency by count
         if self.__contains__(word):
-            self[self._index(word)][1] += 1
-            self.tokens += 1
+            amount = self[self._index(word)][1] + count
+            self.remove(self[self._index(word)])
+            self.append((word, amount))
+            self.tokens += count
         else:
-            self.append([word, 1])
-            self.tokens += 1
+            self.append((word, count))
+            self.tokens += count
             self.types += 1
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
         # TODO: Retrieve word frequency count
-        return self[self._index(word)][1]
+        if self.__contains__(word) is True:
+            return self[self._index(word)][1]
+        else:
+            return 0
 
     def __contains__(self, word):
         """Return boolean indicating if given word is in this histogram."""
@@ -59,6 +64,7 @@ def print_histogram(word_list):
     for word in word_list[-2:]:
         freq = histogram.frequency(word)
         print('{!r} occurs {} times'.format(word, freq))
+    print(histogram.frequency('hello'))
     print()
 
 
@@ -79,6 +85,7 @@ def main():
         woodchuck_text = ('how much wood would a wood chuck chuck'
                           ' if a wood chuck could chuck wood')
         print_histogram(woodchuck_text.split())
+
 
 
 if __name__ == '__main__':
