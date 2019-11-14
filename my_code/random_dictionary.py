@@ -1,10 +1,11 @@
 import random
-from my_module import read_file, choose_words, break_string
+from sys import argv
+from my_module import read_file, choose_words, break_string, _format
 
 
-def rand_dict(text_file):
-    return choose_words(break_string(read_file(text_file)), 1)
+def rand_dict(text_file, amount=1):
+    return choose_words(break_string(read_file(text_file)), amount)
 
 
 if __name__ == '__main__':
-    print(rand_dict('/usr/share/dict/words')[0])
+    print(_format(rand_dict('/usr/share/dict/words', int(argv[1]))))
