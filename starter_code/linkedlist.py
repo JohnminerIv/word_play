@@ -103,6 +103,8 @@ class LinkedList(object):
         # TODO: Loop through all nodes to find item where quality(item) is True
         # TODO: Check if node's data satisfies given quality function
         node = self.head
+        if node is None:
+            return None
         while True:
             if quality(node.data):
                 return node.data
