@@ -20,6 +20,7 @@ class LinkedList(object):
         self.head = None  # First node
         self.tail = None  # Last node
         # Append given items
+        self.len = 0
         if items is not None:
             for item in items:
                 self.append(item)
@@ -56,17 +57,7 @@ class LinkedList(object):
         """Return the length of this linked list by traversing its nodes.
         Running time: O(n) because you have to iterate though all items of the list. """
         # TODO: Loop through all nodes and count one for each
-        count = 0
-        if self.head is not None:
-            node = self.head
-        else:
-            return count
-        while True:
-            count += 1
-            if node.next is None:
-                return count
-            else:
-                node = node.next
+        return self.len
 
     def append(self, item):
         """Insert the given item at the tail of this linked list.
@@ -81,6 +72,7 @@ class LinkedList(object):
             item = Node(item)
             self.head = item
             self.tail = item
+        self.len += 1
 
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
@@ -95,6 +87,7 @@ class LinkedList(object):
             item = Node(item)
             self.head = item
             self.tail = item
+        self.len += 1
 
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality.
@@ -140,6 +133,7 @@ class LinkedList(object):
                     self.tail = last_node
                 else:
                     last_node.next = node.next
+                self.len -= 1
                 break
             elif node.next is None:
                 raise ValueError('Item not found: {}'.format(item))
