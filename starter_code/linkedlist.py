@@ -54,7 +54,7 @@ class LinkedList(object):
 
     def length(self):
         """Return the length of this linked list by traversing its nodes.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        Running time: O(n) because you have to iterate though all items of the list. """
         # TODO: Loop through all nodes and count one for each
         count = 0
         if self.head is not None:
@@ -70,7 +70,7 @@ class LinkedList(object):
 
     def append(self, item):
         """Insert the given item at the tail of this linked list.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        Running time: O(1) each of the operations are constant time, ther are no loops."""
         # TODO: Create new node to hold given item
         # TODO: Append node after tail, if it exists
         if self.tail is not None:
@@ -84,7 +84,7 @@ class LinkedList(object):
 
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
-        TODO: Running time: O(???) Why and under what conditions?"""
+        Running time: O(n) each of the operations are constant time, ther are no loops."""
         # TODO: Create new node to hold given item
         # TODO: Prepend node before head, if it exists
         if self.head is not None:
@@ -98,8 +98,8 @@ class LinkedList(object):
 
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality.
-        TODO: Best case running time: O(???) Why and under what conditions?
-        TODO: Worst case running time: O(???) Why and under what conditions?"""
+        TODO: Best case running time: O(1) there are no items in the list
+        TODO: Worst case running time: O(n) the item that we are looking for does not exist."""
         # TODO: Loop through all nodes to find item where quality(item) is True
         # TODO: Check if node's data satisfies given quality function
         node = self.head
@@ -114,8 +114,8 @@ class LinkedList(object):
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
-        TODO: Best case running time: O(???) Why and under what conditions?
-        TODO: Worst case running time: O(???) Why and under what conditions?"""
+        TODO: Best case running time: O(1) there are no items in the list
+        TODO: Worst case running time: O(n) the item that we are looking to delete does not exist."""
         # TODO: Loop through all nodes to find one whose data matches given item
         # TODO: Update previous node to skip around node with matching data
         # TODO: Otherwise raise error to tell user that delete has failed
