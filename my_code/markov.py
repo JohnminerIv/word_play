@@ -125,22 +125,25 @@ def main():
 
 
 class Chain(dict):
-    def __init__(self, word_list=None):
+    def __init__(self, count=1, word_list=None):
         super(Chain, self).__init__()
         self.types = 0
         self.tokens = 0
+        self.count = count
         if word_list is not None:
             for index in range(len(word_list)):
-                if index + 1 < len(word_list):
-                    self.add_dict(word_list[index], word_list[index + 1])
+                if index + count < len(word_list):
+                    self.add_dict([word_list[index + i] for i in range(count)], [word_list[index + i + 1] for i in range(count)])
 
-    def add_dict(self, word1, word2, count=1):
+    def add_dict(self, words1, words2, count=1):
         """Increase frequency count of given word by given count amount."""
-        if word1 in self.keys():
-            self[word1].add_count(word2, count)
+        key = ' '.join(words1)
+        value = ' '.join(words2)
+        if key in self.keys():
+            self[key].add_count(value, count)
             self.tokens += count
         else:
-            self[word1] = Dictogram([word2])
+            self[key] = Dictogram([value])
             self.tokens += count
             self.types += 1
 
@@ -157,22 +160,53 @@ class Chain(dict):
         else:
             return False
 
-    def sample(self, amount=1, word=None):
+    def sample(self, amount=1000, word=None):
         word_list = []
+        key = ''
         if word is None:
-            word_list.append(random.choice(list(self.keys())))
+            key = random.choice(self.start(list(self.keys())))
+            key_list = key.split()
+            index = 0
+            not_end = True
+            while not_end:
+                word = key_list[index]
+                if '.' in word or '!' in word or '?'in word:
+                    not_end = False
+                if '^' in word:
+                    word_list.append(word.replace('^', ''))
+                else:
+                    word_list.append(word)
+                if index + 1 == len(key_list):
+                    not_end = False
+                index += 1
         else:
+            key = word
             word_list.append(word)
         for i in range(amount-1):
-            word_list.append(self[word_list[-1]].sample())
+            if '.' in key or '?' in key or '!' in key:
+                break
+            key = self[key].sample()
+            words = key.split()
+            word_list.append(words[-1])
         if amount == 1:
             return word_list[0]
         else:
-            return word_list
+            clean_list = [word for word in word_list[0].split()]
+            for i in range(len(word_list)):
+                if i > 0:
+                    clean_list.append(word_list[i])
+            return clean_list
 
+    def start(self, keys_list):
+        return [word for word in keys_list if '^' in word[0]]
+
+    def end(self, keys_list):
+        return [word for word in keys_list if '.' in word]
 
 
 if __name__ == '__main__':
     main()
-    fish_text = 'one fish two fish red fish blue fish'
-    print(Chain(fish_text.split()))
+    fish_text = '^one fish two fish red fish blue fish.'
+    chain = Chain(4, fish_text.split())
+    print(chain)
+    print(chain.sample(10))

@@ -37,15 +37,18 @@ def randomize_words(words_string):
 
 
 def clean_return_list(text_string):
-    text_string = text_string.translate({ord(i): '' for i in """.?!,":;â€œ™@$%&*[]#()~_˜©”"""})
+    text_string = text_string.translate({ord(i): '' for i in """:;â€œ™@$%&*[]#()~_˜©”"""})
     text_string = text_string.translate({ord(i): ' ' for i in """”"""})
-    text_string = text_string.lower()
+    text_string = text_string.replace('. ', '. ^')
+    text_string = text_string.replace('! ', '! ^')
+    text_string = text_string.replace('? ', '? ^')
     list_of_words = text_string.split(' ')
     clean_list = []
     for word in list_of_words:
         clean_word = word.strip()
         clean_word = clean_word.strip('\x9d')
-        if clean_word != '' and clean_word != ' ':
+        clean_word = clean_word.strip('\x9d')
+        if clean_word != '' and clean_word != ' 'and clean_word != '^':
             clean_list.append(clean_word)
     return clean_list
 

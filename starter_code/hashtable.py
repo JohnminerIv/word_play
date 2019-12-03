@@ -104,7 +104,9 @@ class HashTable(object):
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
         if self.contains(key):
-            self.buckets[self._bucket_index(key)].delete(self.buckets[self._bucket_index(key)].find(lambda item: key in item))
+            self.buckets[self._bucket_index(key)].delete(
+                self.buckets[self._bucket_index(key)].find(
+                    lambda item: key in item))
         # TODO: If found, delete entry associated with given key
         else:
             raise KeyError('Key not found: {}'.format(key))
