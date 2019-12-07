@@ -3,7 +3,7 @@ from my_module import clean_return_list, read_file, _format
 
 
 def main(text_list):
-    chain = Chain(4, text_list)
+    chain = Chain(3, text_list)
     # return chain.sample(10, 'rat-faced')
     return chain.sample()
 
