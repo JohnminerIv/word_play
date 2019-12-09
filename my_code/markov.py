@@ -160,9 +160,11 @@ class Chain(dict):
         else:
             return False
 
-    def sample(self, amount=1000, word=None):
+    def sample(self, sentences=1, word=None, amount=1000):
+        sentences -= 1
         word_list = []
         key = ''
+        sentence_count = 0
         if word is None:
             key = random.choice(self.start(list(self.keys())))
             key_list = key.split()
@@ -170,8 +172,10 @@ class Chain(dict):
             not_end = True
             while not_end:
                 word = key_list[index]
-                if '.' in word or '!' in word or '?'in word:
-                    not_end = False
+                if '.' in word[-1] or '!' in word[-1] or '?'in word[-1]:
+                    sentence_count += 1
+                    if sentence_count > sentences:
+                        not_end = False
                 if '^' in word:
                     word_list.append(word.replace('^', ''))
                 else:
@@ -180,21 +184,35 @@ class Chain(dict):
                     not_end = False
                 index += 1
         else:
-            key = word
-            word_list.append(word)
+            key = random.choice(self.find_word(word, list(self.keys())))
+            key_list = key.split()
+            index = 0
+            not_end = True
+            while not_end:
+                word = key_list[index]
+                if '.' in word[-1] or '!' in word[-1] or '?'in word[-1]:
+                    sentence_count += 1
+                    if sentence_count > sentences:
+                        not_end = False
+                if '^' in word:
+                    word_list.append(word.replace('^', ''))
+                else:
+                    word_list.append(word)
+                if index + 1 == len(key_list):
+                    not_end = False
+                index += 1
         for i in range(amount-1):
-            if '.' in key or '?' in key or '!' in key:
-                break
+            if '.' in key[-1][-1] or '?' in key[-1][-1] or '!' in key[-1][-1]:
+                sentence_count += 1
+                if sentence_count > sentences:
+                    break
             key = self[key].sample()
             words = key.split()
             word_list.append(words[-1])
         if amount == 1:
             return word_list[0]
         else:
-            clean_list = [word for word in word_list[0].split()]
-            for i in range(len(word_list)):
-                if i > 0:
-                    clean_list.append(word_list[i])
+            clean_list = [word.replace('^', '') for word in word_list]
             return clean_list
 
     def start(self, keys_list):
@@ -202,6 +220,9 @@ class Chain(dict):
 
     def end(self, keys_list):
         return [word for word in keys_list if '.' in word]
+
+    def find_word(self, _word, keys_list):
+        return [word for word in keys_list if _word in word and '^' in word[0]]
 
 
 if __name__ == '__main__':
