@@ -127,6 +127,7 @@ def main():
 class Chain(dict):
     def __init__(self, count=1, word_list=None):
         super(Chain, self).__init__()
+        self.count = count
         self.types = 0
         self.tokens = 0
         self.count = count
@@ -160,47 +161,10 @@ class Chain(dict):
         else:
             return False
 
-    def sample(self, sentences=1, word=None, amount=1000):
-        sentences -= 1
+    def sample(self, sentences=1, amount=1000):
         word_list = []
-        key = ''
+        key = random.choice(self.end(list(self.keys())))
         sentence_count = 0
-        if word is None:
-            key = random.choice(self.start(list(self.keys())))
-            key_list = key.split()
-            index = 0
-            not_end = True
-            while not_end:
-                word = key_list[index]
-                if '.' in word[-1] or '!' in word[-1] or '?'in word[-1]:
-                    sentence_count += 1
-                    if sentence_count > sentences:
-                        not_end = False
-                if '^' in word:
-                    word_list.append(word.replace('^', ''))
-                else:
-                    word_list.append(word)
-                if index + 1 == len(key_list):
-                    not_end = False
-                index += 1
-        else:
-            key = random.choice(self.find_word(word, list(self.keys())))
-            key_list = key.split()
-            index = 0
-            not_end = True
-            while not_end:
-                word = key_list[index]
-                if '.' in word[-1] or '!' in word[-1] or '?'in word[-1]:
-                    sentence_count += 1
-                    if sentence_count > sentences:
-                        not_end = False
-                if '^' in word:
-                    word_list.append(word.replace('^', ''))
-                else:
-                    word_list.append(word)
-                if index + 1 == len(key_list):
-                    not_end = False
-                index += 1
         for i in range(amount-1):
             if '.' in key[-1][-1] or '?' in key[-1][-1] or '!' in key[-1][-1]:
                 sentence_count += 1
@@ -219,10 +183,10 @@ class Chain(dict):
         return [word for word in keys_list if '^' in word[0]]
 
     def end(self, keys_list):
-        return [word for word in keys_list if '.' in word]
+        return [word for word in keys_list if '.' in word[-1]]
 
     def find_word(self, _word, keys_list):
-        return [word for word in keys_list if _word in word and '^' in word[0]]
+        return [word for word in keys_list if _word in word and '.' in word[0]]
 
 
 if __name__ == '__main__':
