@@ -21,7 +21,7 @@ ENV FLASK_APP=app.py
 ENV FLASK_ENV=development
 
 # STEP 6: Expose the port that Flask is running on
-EXPOSE 5000
+EXPOSE 8000
 
 # STEP 7: Run Flask!
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "app:app", "--certfile=server.crt" "--keyfile=server.key"]
